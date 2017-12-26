@@ -29,6 +29,7 @@ const path =
         root:    './../app/',
         audios:  './../app/assets/audios/',
         fonts:   './../app/assets/fonts/',
+        icons:   './../app/assets/icons/',
         images:  './../app/assets/images/',
         scripts: './../app/assets/scripts/',
         styles:  './../app/assets/styles/',
@@ -40,6 +41,7 @@ const path =
         root:    './../dist/',
         audios:  './../dist/assets/audios/',
         fonts:   './../dist/assets/fonts/',
+        icons:   './../dist/assets/icons/',
         images:  './../dist/assets/images/',
         scripts: './../dist/assets/scripts/',
         styles:  './../dist/assets/styles/',
@@ -51,6 +53,7 @@ const path =
         root:    './../src/',
         audios:  './../src/assets/audios/',
         fonts:   './../src/assets/fonts/',
+        icons:   './../src/assets/icons/',
         images:  './../src/assets/images/',
         scripts: './../src/assets/scripts/',
         styles:  './../src/assets/styles/',
@@ -224,6 +227,29 @@ gulp.task('fonts', () =>
             }))
 })
 
+gulp.task('icons', () =>
+{
+    return gulp.src(`${path.src.icons}*.*`)
+        .pipe(gulp_plumber(
+            {
+                errorHandler: gulp_notify.onError(
+                    {
+                        title: 'Icons',
+                        message: '<%= error.message %>',
+                        sound: 'beep'
+                    })
+            }))
+        .pipe(gulp.dest(path.app.icons))
+        .pipe(gulp.dest(path.dist.icons))
+        .pipe(browser_sync.stream())
+        .pipe(gulp_notify(
+            {
+                title: 'Icons',
+                message: 'success',
+                sound: 'beep'
+            }))
+})
+
 gulp.task('audios', () =>
 {
     return gulp.src(`${path.src.audios}*.*`)
@@ -314,10 +340,11 @@ gulp.task('watch', () =>
     gulp.watch(`${path.src.scripts}components/lib/*.*`, ['libs'])
 
     gulp.watch(`${path.src.fonts}*.*`, ['fonts'])
+    gulp.watch(`${path.src.icons}*.*`, ['icons'])
 
     gulp.watch(`${path.src.audios}*.*`, ['audios'])
     gulp.watch(`${path.src.images}*.*`, ['images'])
     gulp.watch(`${path.src.videos}*.*`, ['videos'])
 })
 
-gulp.task('default', ['libs', 'index', 'views', 'styles', 'scripts', 'fonts', 'audios', 'images', 'videos', 'watch'])
+gulp.task('default', ['libs', 'index', 'views', 'styles', 'scripts', 'fonts', 'icons', 'audios', 'images', 'videos', 'watch'])
