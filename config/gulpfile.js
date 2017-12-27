@@ -1,8 +1,8 @@
-/* -------------------------------------------------- *\
+/* ---------------------------------------------------------------------------------------------------- *\
 |*
 |* REQUIRES
 |*
-\* -------------------------------------------------- */
+\* ---------------------------------------------------------------------------------------------------- */
 
 const browser_sync  = require('browser-sync').create()
 
@@ -18,146 +18,157 @@ const gulp          = require('gulp'),
       gulp_stylus   = require('gulp-stylus'),
       gulp_uglify   = require('gulp-uglify')
 
+/* ---------------------------------------------------------------------------------------------------- *\
+|*
+|* LAYOUTS
+|*
+\* ---------------------------------------------------------------------------------------------------- */
+
 /* -------------------------------------------------- *\
-|*
 |* PATHS
-|*
 \* -------------------------------------------------- */
 
 const path =
 {
     app:
     {
-        root:    './../app/',
-        audios:  './../app/assets/audios/',
-        fonts:   './../app/assets/fonts/',
-        icons:   './../app/assets/icons/',
-        images:  './../app/assets/images/',
-        scripts: './../app/assets/scripts/',
-        styles:  './../app/assets/styles/',
-        videos:  './../app/assets/videos/',
-        views:   './../app/assets/views/'
+        root    : './../app/',
+        audios  : './../app/assets/audios/',
+        fonts   : './../app/assets/fonts/',
+        icons   : './../app/assets/icons/',
+        images  : './../app/assets/images/',
+        scripts : './../app/assets/scripts/',
+        styles  : './../app/assets/styles/',
+        videos  : './../app/assets/videos/',
+        views   : './../app/assets/views/'
     },
     dist:
     {
-        root:    './../dist/',
-        audios:  './../dist/assets/audios/',
-        fonts:   './../dist/assets/fonts/',
-        icons:   './../dist/assets/icons/',
-        images:  './../dist/assets/images/',
-        scripts: './../dist/assets/scripts/',
-        styles:  './../dist/assets/styles/',
-        videos:  './../dist/assets/videos/',
-        views:   './../dist/assets/views/'
+        root    : './../dist/',
+        audios  : './../dist/assets/audios/',
+        fonts   : './../dist/assets/fonts/',
+        icons   : './../dist/assets/icons/',
+        images  : './../dist/assets/images/',
+        scripts : './../dist/assets/scripts/',
+        styles  : './../dist/assets/styles/',
+        videos  : './../dist/assets/videos/',
+        views   : './../dist/assets/views/'
     },
     src:
     {
-        root:    './../src/',
-        audios:  './../src/assets/audios/',
-        fonts:   './../src/assets/fonts/',
-        icons:   './../src/assets/icons/',
-        images:  './../src/assets/images/',
-        scripts: './../src/assets/scripts/',
-        styles:  './../src/assets/styles/',
-        videos:  './../src/assets/videos/',
-        views:   './../src/assets/views/'
+        root    : './../src/',
+        audios  : './../src/assets/audios/',
+        fonts   : './../src/assets/fonts/',
+        icons   : './../src/assets/icons/',
+        images  : './../src/assets/images/',
+        scripts : './../src/assets/scripts/',
+        styles  : './../src/assets/styles/',
+        videos  : './../src/assets/videos/',
+        views   : './../src/assets/views/'
     }
 }
 
 /* -------------------------------------------------- *\
-|*
 |* FOLDERS
-|*
 \* -------------------------------------------------- */
 
 const folder =
 {
-    components: 'components/',
-    includes:   'includes/',
-    lib:        'lib/'
+    any        : '**/',
+    components : 'components/',
+    includes   : 'includes/',
+    lib        : 'lib/'
 }
 
 /* -------------------------------------------------- *\
-|*
 |* FILES
-|*
 \* -------------------------------------------------- */
 
 const file =
 {
-    any:  '*.*',
-    cda:  '*.cda',
-    mp3:  '*.mp3',
-    ogg:  '*.ogg',
-    wav:  '*.wav',
-    wma:  '*.wma',
-    eot:  '*.eot',
-    otf:  '*.otf',
-    ttf:  '*.ttf',
-    woff: '*.woff',
-    bmp:  '*.bmp',
-    gif:  '*.gif',
-    jpeg: '*.jpeg',
-    jpg:  '*.jpg',
-    png:  '*.png',
-    svg:  '*.svg',
-    js:   '*.js',
-    ts:   '*.ts', 
-    css:  '*.css',
-    less: '*.less',
-    sass: '*.sass',
-    scss: '*.scss',
-    styl: '*.styl',
-    avi:  '*.avi',
-    mov:  '*.mov',
-    mp4:  '*.mp4',
-    mpeg: '*.mpeg',
-    mpg:  '*.mpg',
-    ra:   '*.ra',
-    wmf:  '*.wmf',
-    xvid: '*.xvid',
-    haml: '*.haml',
-    html: '*.html',
-    php:  '*.php',
-    pug:  '*.pug'
+    any  : '*.*',
+    cda  : '*.cda',
+    mp3  : '*.mp3',
+    ogg  : '*.ogg',
+    wav  : '*.wav',
+    wma  : '*.wma',
+    eot  : '*.eot',
+    otf  : '*.otf',
+    ttf  : '*.ttf',
+    woff : '*.woff',
+    bmp  : '*.bmp',
+    gif  : '*.gif',
+    jpeg : '*.jpeg',
+    jpg  : '*.jpg',
+    png  : '*.png',
+    svg  : '*.svg',
+    js   : '*.js',
+    ts   : '*.ts',
+    css  : '*.css',
+    less : '*.less',
+    sass : '*.sass',
+    scss : '*.scss',
+    styl : '*.styl',
+    avi  : '*.avi',
+    mov  : '*.mov',
+    mp4  : '*.mp4',
+    mpeg : '*.mpeg',
+    mpg  : '*.mpg',
+    ra   : '*.ra',
+    wmf  : '*.wmf',
+    xvid : '*.xvid',
+    haml : '*.haml',
+    html : '*.html',
+    php  : '*.php',
+    pug  : '*.pug'
 }
 
-/* -------------------------------------------------- *\
+/* ---------------------------------------------------------------------------------------------------- *\
 |*
 |* TASKS
 |*
+\* ---------------------------------------------------------------------------------------------------- */
+
+/* -------------------------------------------------- *\
+|* LIBS
 \* -------------------------------------------------- */
 
 gulp.task('libs', () =>
 {
+    // Update styles libraries
     gulp.src(`${path.src.styles}${folder.lib}${file.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Styles lib',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Styles lib',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(`${path.app.styles}${folder.lib}`))
         .pipe(gulp_cssnano())
         .pipe(gulp.dest(`${path.dist.styles}${folder.lib}`))
 
+    // Update scripts libraries
     gulp.src(`${path.src.scripts}${folder.lib}${file.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Scripts lib',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Scripts lib',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(`${path.app.scripts}${folder.lib}`))
         .pipe(gulp_uglify())
         .pipe(gulp.dest(`${path.dist.scripts}${folder.lib}`))
 })
+
+/* -------------------------------------------------- *\
+|* INDEX
+\* -------------------------------------------------- */
 
 gulp.task('index', () =>
 {
@@ -166,9 +177,9 @@ gulp.task('index', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Index',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Index',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp_pug(
@@ -184,11 +195,15 @@ gulp.task('index', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Index',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Index',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* VIEWS
+\* -------------------------------------------------- */
 
 gulp.task('views', () =>
 {
@@ -197,9 +212,9 @@ gulp.task('views', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Views',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Views',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp_pug(
@@ -215,11 +230,15 @@ gulp.task('views', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Views',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Views',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* STYLES
+\* -------------------------------------------------- */
 
 gulp.task('styles', () =>
 {
@@ -228,9 +247,9 @@ gulp.task('styles', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Styles',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Styles',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp_stylus())
@@ -240,11 +259,15 @@ gulp.task('styles', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Styles',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Styles',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* SCRIPTS
+\* -------------------------------------------------- */
 
 gulp.task('scripts', () =>
 {
@@ -258,9 +281,9 @@ gulp.task('scripts', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Scripts',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Scripts',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp_babel(
@@ -274,11 +297,15 @@ gulp.task('scripts', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Scripts',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Scripts',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* FONTS
+\* -------------------------------------------------- */
 
 gulp.task('fonts', () =>
 {
@@ -287,9 +314,9 @@ gulp.task('fonts', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Fonts',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Fonts',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(path.app.fonts))
@@ -297,11 +324,15 @@ gulp.task('fonts', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Fonts',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Fonts',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* ICONS
+\* -------------------------------------------------- */
 
 gulp.task('icons', () =>
 {
@@ -310,9 +341,9 @@ gulp.task('icons', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Icons',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Icons',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(path.app.icons))
@@ -320,11 +351,15 @@ gulp.task('icons', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Icons',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Icons',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* AUDIOS
+\* -------------------------------------------------- */
 
 gulp.task('audios', () =>
 {
@@ -333,9 +368,9 @@ gulp.task('audios', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Audios',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Audios',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(path.app.audios))
@@ -343,11 +378,15 @@ gulp.task('audios', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Audios',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Audios',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* IMAGES
+\* -------------------------------------------------- */
 
 gulp.task('images', () =>
 {
@@ -356,9 +395,9 @@ gulp.task('images', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Images',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Images',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(path.app.images))
@@ -367,11 +406,15 @@ gulp.task('images', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Images',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Images',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
+
+/* -------------------------------------------------- *\
+|* VIDEOS
+\* -------------------------------------------------- */
 
 gulp.task('videos', () =>
 {
@@ -380,9 +423,9 @@ gulp.task('videos', () =>
             {
                 errorHandler: gulp_notify.onError(
                     {
-                        title: 'Videos',
-                        message: '<%= error.message %>',
-                        sound: 'beep'
+                        title   : 'Videos',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
                     })
             }))
         .pipe(gulp.dest(path.app.videos))
@@ -390,39 +433,64 @@ gulp.task('videos', () =>
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title: 'Videos',
-                message: 'success',
-                sound: 'beep'
+                title   : 'Videos',
+                message : 'success',
+                sound   : 'beep'
             }))
 })
 
+/* -------------------------------------------------- *\
+|* WATCH
+\* -------------------------------------------------- */
+
 gulp.task('watch', () =>
 {
+    // Run browser
     browser_sync.init(
         {
-            server: path.dist.root,
-            browser: 'Google Chrome'
+            server  : path.dist.root,
+            browser : 'Google Chrome'
         })
-    
+
+    // Update views
     gulp.watch(`${path.src.root}${file.any}`, ['index'])
     gulp.watch(`${path.src.views}${file.any}`, ['views'])
     gulp.watch(`${path.src.views}${folder.includes}${file.any}`, ['index', 'views'])
     gulp.watch(`${path.src.views}${folder.includes}${folder.components}${file.any}`, ['index', 'views'])
 
+    // Update styles
     gulp.watch(`${path.src.styles}${file.any}`, ['styles'])
     gulp.watch(`${path.src.styles}${folder.components}${file.any}`, ['styles'])
     gulp.watch(`${path.src.styles}${folder.lib}${file.any}`, ['libs'])
 
+    // Update scripts
     gulp.watch(`${path.src.scripts}${file.any}`, ['scripts'])
     gulp.watch(`${path.src.scripts}${folder.components}${file.any}`, ['scripts'])
     gulp.watch(`${path.src.scripts}${folder.lib}${file.any}`, ['libs'])
 
+    // Update assets
     gulp.watch(`${path.src.fonts}${file.any}`, ['fonts'])
     gulp.watch(`${path.src.icons}${file.any}`, ['icons'])
-
     gulp.watch(`${path.src.audios}${file.any}`, ['audios'])
     gulp.watch(`${path.src.images}${file.any}`, ['images'])
     gulp.watch(`${path.src.videos}${file.any}`, ['videos'])
 })
 
-gulp.task('default', ['libs', 'index', 'views', 'styles', 'scripts', 'fonts', 'icons', 'audios', 'images', 'videos', 'watch'])
+/* -------------------------------------------------- *\
+|* DEFAULT
+\* -------------------------------------------------- */
+
+gulp.task('default',
+    [
+        'libs',
+        'index',
+        'views',
+        'styles',
+        'scripts',
+        'fonts',
+        'icons',
+        'audios',
+        'images',
+        'videos',
+        'watch'
+    ])
