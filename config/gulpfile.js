@@ -15,11 +15,8 @@ const gulp          = require('gulp'),
       gulp_notify   = require('gulp-notify'),
       gulp_plumber  = require('gulp-plumber'),
       gulp_pug      = require('gulp-pug'),
-      gulp_rename   = require('gulp-rename'),
-      gulp_sass     = require('gulp-sass'),
       gulp_stylus   = require('gulp-stylus'),
-      gulp_uglify   = require('gulp-uglify'),
-      gulp_zip      = require('gulp-zip')
+      gulp_uglify   = require('gulp-uglify')
 
 /* -------------------------------------------------- *\
 |*

@@ -6,23 +6,32 @@
 
 ## Features
 
-- Compile PUG to HTML
-- Compile STYLUS to CSS
-- Compile ES6 to ES5
-- Minify HTML
-- Minify CSS
-- Minify JS
-- Minify images
-- Transfer all assets
-- Reset.css library
-- Font-awesome.css library
-- Modernizr-custom.js library
-- config/ folder to edit any configuration
-- app/ folder to preview unminified files
-- dist/ folder to export final work
-- src/ folder to work in it
-- CSScomb
-- ESLint
+- Live reloading with Google Chrome on save
+- Compiling languages
+  - Conversion of PUG to HTML
+    - Possibility to set HTML as default or any other HTML preprocessor but additionnal modules are required
+  - Conversion of STYLUS to CSS
+    - Possibility to set CSS as default or any other CSS preprocessor but additionnal modules are required
+  - Conversion of ES6 to ES5
+    - Possibility to set ES5 as default or any other JS preprocessor but additionnal modules are required
+  - Minifying HTML
+  - Minifying CSS
+  - Minifying JS
+- Transfer of all assets
+  - Including audios, fonts, icons, images and videos
+  - Minifying images
+- Libraries included
+  - reset.css
+  - font-awesome.css
+  - modernizr-custom.js
+- Several folders with different usages
+  - config/ folder to edit any configuration
+  - app/ folder to preview unminified files
+  - dist/ folder to export final work
+  - src/ folder to work in it
+- Tools
+  - CSScomb
+  - ESLint
 
 ## Setup
 
@@ -88,7 +97,7 @@ gulp
 │       │   └─ lib
 │       ├─ videos
 │       └─ views
-└ src
+└─ src
     ├─ index.pug
     └─ assets
         ├─ audios
