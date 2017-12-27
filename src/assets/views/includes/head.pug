@@ -1,0 +1,27 @@
+head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    if $page == 'index'
+        title Home
+        //- Icons
+        //- Fonts
+        //- CSS
+        link(rel="stylesheet", href="assets/styles/lib/reset.css")
+        link(rel="stylesheet", href="assets/styles/lib/font-awesome.css")
+        link(rel="stylesheet", href="assets/styles/main.css")
+        //- JS
+        script(src="assets/scripts/lib/modernizr-custom.js")
+    else
+        if $page == 'about'
+            title About
+        else
+            title Other
+        //- Icons
+        //- Fonts
+        //- CSS
+        link(rel="stylesheet", href="../styles/lib/reset.css")
+        link(rel="stylesheet", href="../styles/lib/font-awesome.css")
+        link(rel="stylesheet", href="../styles/main.css")
+        //- JS
+        script(src="../scripts/lib/modernizr-custom.js")

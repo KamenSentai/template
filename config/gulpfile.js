@@ -4,31 +4,22 @@
 |*
 \* -------------------------------------------------- */
 
-const browser_sync      = require('browser-sync').create()
+const browser_sync  = require('browser-sync').create()
 
-const gulp              = require('gulp'),
-      gulp_autoprefixer = require('gulp-autoprefixer'),
-      gulp_babel        = require('gulp-babel'),
-      gulp_coffee       = require('gulp-coffee'),
-      gulp_compass      = require('gulp-compass'),
-      gulp_concat       = require('gulp-concat'),
-      gulp_cssnano      = require('gulp-cssnano'),
-      gulp_filter       = require('gulp-filter'),
-      gulp_imagemin     = require('gulp-imagemin'),
-      gulp_less         = require('gulp-less'),
-      gulp_livereload   = require('gulp-livereload'),
-      gulp_notify       = require('gulp-notify'),
-      gulp_plumber      = require('gulp-plumber'),
-      gulp_pug          = require('gulp-pug'),
-      gulp_rename       = require('gulp-rename'),
-      gulp_responsive   = require('gulp-responsive'),
-      gulp_sass         = require('gulp-sass'),
-      gulp_sourcemaps   = require('gulp-sourcemaps'),
-      gulp_stylus       = require('gulp-stylus'),
-      gulp_svgmin       = require('gulp-svgmin'),
-      gulp_typescript   = require('gulp-typescript'),
-      gulp_uglify       = require('gulp-uglify'),
-      gulp_zip          = require('gulp-zip')
+const gulp          = require('gulp'),
+      gulp_babel    = require('gulp-babel'),
+      gulp_concat   = require('gulp-concat'),
+      gulp_cssnano  = require('gulp-cssnano'),
+      gulp_imagemin = require('gulp-imagemin'),
+      gulp_htmlmin  = require('gulp-htmlmin'),
+      gulp_notify   = require('gulp-notify'),
+      gulp_plumber  = require('gulp-plumber'),
+      gulp_pug      = require('gulp-pug'),
+      gulp_rename   = require('gulp-rename'),
+      gulp_sass     = require('gulp-sass'),
+      gulp_stylus   = require('gulp-stylus'),
+      gulp_uglify   = require('gulp-uglify'),
+      gulp_zip      = require('gulp-zip')
 
 /* -------------------------------------------------- *\
 |*
@@ -183,7 +174,15 @@ gulp.task('index', () =>
                         sound: 'beep'
                     })
             }))
+        .pipe(gulp_pug(
+            {
+                pretty: true
+            }))
         .pipe(gulp.dest(path.app.root))
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace: true
+            }))
         .pipe(gulp.dest(path.dist.root))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
@@ -206,7 +205,15 @@ gulp.task('views', () =>
                         sound: 'beep'
                     })
             }))
+        .pipe(gulp_pug(
+            {
+                pretty: true
+            }))
         .pipe(gulp.dest(path.app.views))
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace: true
+            }))
         .pipe(gulp.dest(path.dist.views))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
@@ -229,7 +236,7 @@ gulp.task('styles', () =>
                         sound: 'beep'
                     })
             }))
-        .pipe(gulp_sass())
+        .pipe(gulp_stylus())
         .pipe(gulp.dest(path.app.styles))
         .pipe(gulp_cssnano())
         .pipe(gulp.dest(path.dist.styles))
@@ -402,14 +409,16 @@ gulp.task('watch', () =>
     
     gulp.watch(`${path.src.root}${file.any}`, ['index'])
     gulp.watch(`${path.src.views}${file.any}`, ['views'])
+    gulp.watch(`${path.src.views}${folder.includes}${file.any}`, ['index', 'views'])
+    gulp.watch(`${path.src.views}${folder.includes}${folder.components}${file.any}`, ['index', 'views'])
 
     gulp.watch(`${path.src.styles}${file.any}`, ['styles'])
     gulp.watch(`${path.src.styles}${folder.components}${file.any}`, ['styles'])
-    gulp.watch(`${path.src.styles}${folder.components}${folder.lib}${file.any}`, ['libs'])
+    gulp.watch(`${path.src.styles}${folder.lib}${file.any}`, ['libs'])
 
     gulp.watch(`${path.src.scripts}${file.any}`, ['scripts'])
     gulp.watch(`${path.src.scripts}${folder.components}${file.any}`, ['scripts'])
-    gulp.watch(`${path.src.scripts}${folder.components}${folder.lib}${file.any}`, ['libs'])
+    gulp.watch(`${path.src.scripts}${folder.lib}${file.any}`, ['libs'])
 
     gulp.watch(`${path.src.fonts}${file.any}`, ['fonts'])
     gulp.watch(`${path.src.icons}${file.any}`, ['icons'])
