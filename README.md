@@ -24,10 +24,13 @@
   - reset.css
   - font-awesome.css
   - modernizr-custom.js
+  - need to declare every library in the index file and the views files
 - Several folders with different usages
   - config/ folder to edit any configuration
   - app/ folder to preview unminified files
+    - folder not existed in the pack but automatically created when Gulp is running
   - dist/ folder to export final work
+    - folder not existed in the pack but automatically created when Gulp is running
   - src/ folder to work in it
 - Tools
   - CSScomb
