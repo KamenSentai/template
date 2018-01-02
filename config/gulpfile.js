@@ -5,6 +5,10 @@
 \* ---------------------------------------------------------------------------------------------------- */
 
 const browser_sync  = require('browser-sync').create()
+const babelify      = require('babelify')
+const browserify    = require('browserify')
+const buffer        = require('vinyl-buffer')
+const source        = require('vinyl-source-stream')
 
 const gulp          = require('gulp'),
       gulp_babel    = require('gulp-babel'),
@@ -271,12 +275,18 @@ gulp.task('styles', () =>
 
 gulp.task('scripts', () =>
 {
-    return gulp.src(
-            [
-                `${path.src.scripts}${folder.components}variables.*`,
-                `${path.src.scripts}${folder.components}${file.any}`,
-                `${path.src.scripts}main.*`
-            ])
+	return browserify(
+        {
+            debug: true,
+            entries: `${path.src.scripts}main.js`
+        })
+        .transform(babelify.configure(
+            {
+                presets: ['babel-preset-env'].map(require.resolve)
+            }))
+        .bundle()
+        .pipe(source('main.js'))
+        .pipe(buffer())
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -286,14 +296,9 @@ gulp.task('scripts', () =>
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp_babel(
-            {
-                presets: ['babel-preset-env'].map(require.resolve)
-            }))
-        .pipe(gulp_concat('main.js'))
-        .pipe(gulp.dest(path.app.scripts))
+        .pipe(gulp.dest(`${path.app.scripts}`))
         .pipe(gulp_uglify())
-        .pipe(gulp.dest(path.dist.scripts))
+        .pipe(gulp.dest(`${path.dist.scripts}`))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {

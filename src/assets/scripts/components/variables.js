@@ -1,1 +1,4 @@
-const $body = document.body
+export const $query =
+{
+    body : document.body
+}

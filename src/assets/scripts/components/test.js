@@ -1,4 +1,4 @@
-class Test
+export default class Test
 {
     constructor(x, y, z)
     {

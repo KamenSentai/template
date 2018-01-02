@@ -110,6 +110,7 @@ gulp
         ├─ scripts
         │   ├─ main.js
         │   ├─ components
+        │   │   ├─ log.js
         │   │   ├─ test.js
         │   │   └─ variables.js
         │   └─ lib
