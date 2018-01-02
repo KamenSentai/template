@@ -90,41 +90,65 @@ const folder =
 
 const file =
 {
-    any  : '*.*',
-    cda  : '*.cda',
-    mp3  : '*.mp3',
-    ogg  : '*.ogg',
-    wav  : '*.wav',
-    wma  : '*.wma',
-    eot  : '*.eot',
-    otf  : '*.otf',
-    ttf  : '*.ttf',
-    woff : '*.woff',
-    bmp  : '*.bmp',
-    gif  : '*.gif',
-    jpeg : '*.jpeg',
-    jpg  : '*.jpg',
-    png  : '*.png',
-    svg  : '*.svg',
-    js   : '*.js',
-    ts   : '*.ts',
-    css  : '*.css',
-    less : '*.less',
-    sass : '*.sass',
-    scss : '*.scss',
-    styl : '*.styl',
-    avi  : '*.avi',
-    mov  : '*.mov',
-    mp4  : '*.mp4',
-    mpeg : '*.mpeg',
-    mpg  : '*.mpg',
-    ra   : '*.ra',
-    wmf  : '*.wmf',
-    xvid : '*.xvid',
-    haml : '*.haml',
-    html : '*.html',
-    php  : '*.php',
-    pug  : '*.pug'
+    any    : '*',
+    app    : 'app',
+    bundle : 'bundle',
+    index  : 'index',
+    main   : 'main'
+}
+
+/* -------------------------------------------------- *\
+|* EXTENSIONS
+\* -------------------------------------------------- */
+
+const extensions =
+{
+    any  : '.*',
+    cda  : '.cda',
+    mp3  : '.mp3',
+    ogg  : '.ogg',
+    wav  : '.wav',
+    wma  : '.wma',
+    eot  : '.eot',
+    otf  : '.otf',
+    ttf  : '.ttf',
+    woff : '.woff',
+    bmp  : '.bmp',
+    gif  : '.gif',
+    jpeg : '.jpeg',
+    jpg  : '.jpg',
+    png  : '.png',
+    svg  : '.svg',
+    js   : '.js',
+    ts   : '.ts',
+    css  : '.css',
+    less : '.less',
+    sass : '.sass',
+    scss : '.scss',
+    styl : '.styl',
+    avi  : '.avi',
+    mov  : '.mov',
+    mp4  : '.mp4',
+    mpeg : '.mpeg',
+    mpg  : '.mpg',
+    ra   : '.ra',
+    wmf  : '.wmf',
+    xvid : '.xvid',
+    haml : '.haml',
+    html : '.html',
+    php  : '.php',
+    pug  : '.pug'
+}
+
+/* -------------------------------------------------- *\
+|* MESSAGES
+\* -------------------------------------------------- */
+
+const message =
+{
+    compiled    : 'compiled',
+    distributed : 'distributed',
+    transpiled  : 'transpiled'
 }
 
 /* ---------------------------------------------------------------------------------------------------- *\
@@ -140,7 +164,7 @@ const file =
 gulp.task('libs', () =>
 {
     // Update styles libraries
-    gulp.src(`${path.src.styles}${folder.lib}${file.any}`)
+    gulp.src(`${path.src.styles}${folder.lib}${file.any}${extensions.css}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -155,7 +179,7 @@ gulp.task('libs', () =>
         .pipe(gulp.dest(`${path.dist.styles}${folder.lib}`))
 
     // Update scripts libraries
-    gulp.src(`${path.src.scripts}${folder.lib}${file.any}`)
+    gulp.src(`${path.src.scripts}${folder.lib}${file.any}${extensions.js}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -176,7 +200,7 @@ gulp.task('libs', () =>
 
 gulp.task('index', () =>
 {
-    return gulp.src(`${path.src.root}index.*`)
+    return gulp.src(`${path.src.root}${file.index}${extensions.pug}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -200,7 +224,7 @@ gulp.task('index', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Index',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
@@ -211,7 +235,7 @@ gulp.task('index', () =>
 
 gulp.task('views', () =>
 {
-    return gulp.src(`${path.src.views}${file.any}`)
+    return gulp.src(`${path.src.views}${file.any}${extensions.pug}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -235,7 +259,7 @@ gulp.task('views', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Views',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
@@ -246,7 +270,7 @@ gulp.task('views', () =>
 
 gulp.task('styles', () =>
 {
-    return gulp.src(`${path.src.styles}${file.any}`)
+    return gulp.src(`${path.src.styles}${file.main}${extensions.styl}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -264,7 +288,7 @@ gulp.task('styles', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Styles',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
@@ -278,14 +302,14 @@ gulp.task('scripts', () =>
 	return browserify(
         {
             debug: true,
-            entries: `${path.src.scripts}main.js`
+            entries: `${path.src.scripts}${file.main}${extensions.js}`
         })
         .transform(babelify.configure(
             {
                 presets: ['babel-preset-env'].map(require.resolve)
             }))
         .bundle()
-        .pipe(source('main.js'))
+        .pipe(source(`${file.main}${extensions.js}`))
         .pipe(buffer())
         .pipe(gulp_plumber(
             {
@@ -303,7 +327,7 @@ gulp.task('scripts', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Scripts',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.transpiled}`,
                 sound   : 'beep'
             }))
 })
@@ -314,7 +338,7 @@ gulp.task('scripts', () =>
 
 gulp.task('fonts', () =>
 {
-    return gulp.src(`${path.src.fonts}${file.any}`)
+    return gulp.src(`${path.src.fonts}${file.any}${extensions.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -330,7 +354,7 @@ gulp.task('fonts', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Fonts',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.distributed}`,
                 sound   : 'beep'
             }))
 })
@@ -341,7 +365,7 @@ gulp.task('fonts', () =>
 
 gulp.task('icons', () =>
 {
-    return gulp.src(`${path.src.icons}${file.any}`)
+    return gulp.src(`${path.src.icons}${file.any}${extensions.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -357,7 +381,7 @@ gulp.task('icons', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Icons',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.distributed}`,
                 sound   : 'beep'
             }))
 })
@@ -368,7 +392,7 @@ gulp.task('icons', () =>
 
 gulp.task('audios', () =>
 {
-    return gulp.src(`${path.src.audios}${file.any}`)
+    return gulp.src(`${path.src.audios}${file.any}${extensions.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -384,7 +408,7 @@ gulp.task('audios', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Audios',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.distributed}`,
                 sound   : 'beep'
             }))
 })
@@ -395,7 +419,7 @@ gulp.task('audios', () =>
 
 gulp.task('images', () =>
 {
-    return gulp.src(`${path.src.images}${file.any}`)
+    return gulp.src(`${path.src.images}${file.any}${extensions.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -412,7 +436,7 @@ gulp.task('images', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Images',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.distributed}`,
                 sound   : 'beep'
             }))
 })
@@ -423,7 +447,7 @@ gulp.task('images', () =>
 
 gulp.task('videos', () =>
 {
-    return gulp.src(`${path.src.videos}${file.any}`)
+    return gulp.src(`${path.src.videos}${file.any}${extensions.any}`)
         .pipe(gulp_plumber(
             {
                 errorHandler: gulp_notify.onError(
@@ -439,7 +463,7 @@ gulp.task('videos', () =>
         .pipe(gulp_notify(
             {
                 title   : 'Videos',
-                message : 'success',
+                message : `<%= file.relative %> : ${message.distributed}`,
                 sound   : 'beep'
             }))
 })
@@ -457,28 +481,49 @@ gulp.task('watch', () =>
             browser : 'Google Chrome'
         })
 
-    // Update views
-    gulp.watch(`${path.src.root}${file.any}`, ['index'])
-    gulp.watch(`${path.src.views}${file.any}`, ['views'])
-    gulp.watch(`${path.src.views}${folder.includes}${file.any}`, ['index', 'views'])
-    gulp.watch(`${path.src.views}${folder.includes}${folder.components}${file.any}`, ['index', 'views'])
+    // Watch libs
+    gulp.watch(
+        [
+            `${path.src.styles}${folder.lib}${file.any}${extensions.any}`,
+            `${path.src.scripts}${folder.lib}${file.any}${extensions.any}`
+        ], ['libs'])
 
-    // Update styles
-    gulp.watch(`${path.src.styles}${file.any}`, ['styles'])
-    gulp.watch(`${path.src.styles}${folder.components}${file.any}`, ['styles'])
-    gulp.watch(`${path.src.styles}${folder.lib}${file.any}`, ['libs'])
+    // Watch index
+    gulp.watch(
+        [
+            `${path.src.root}${file.any}${extensions.any}`,
+            `${path.src.views}${folder.includes}${file.any}${extensions.any}`,
+            `${path.src.views}${folder.includes}${folder.components}${file.any}${extensions.any}`
+        ], ['index'])
 
-    // Update scripts
-    gulp.watch(`${path.src.scripts}${file.any}`, ['scripts'])
-    gulp.watch(`${path.src.scripts}${folder.components}${file.any}`, ['scripts'])
-    gulp.watch(`${path.src.scripts}${folder.lib}${file.any}`, ['libs'])
+    // Watch views
+    gulp.watch(
+        [
+            `${path.src.views}${file.any}${extensions.any}`,
+            `${path.src.views}${folder.includes}${file.any}${extensions.any}`,
+            `${path.src.views}${folder.includes}${folder.components}${file.any}${extensions.any}`
+        ], ['views'])
 
-    // Update assets
-    gulp.watch(`${path.src.fonts}${file.any}`, ['fonts'])
-    gulp.watch(`${path.src.icons}${file.any}`, ['icons'])
-    gulp.watch(`${path.src.audios}${file.any}`, ['audios'])
-    gulp.watch(`${path.src.images}${file.any}`, ['images'])
-    gulp.watch(`${path.src.videos}${file.any}`, ['videos'])
+    // Watch styles
+    gulp.watch(
+        [
+            `${path.src.styles}${file.any}${extensions.any}`,
+            `${path.src.styles}${folder.components}${file.any}${extensions.any}`
+        ], ['styles'])
+
+    // Watch scripts
+    gulp.watch(
+        [
+            `${path.src.scripts}${file.any}${extensions.any}`,
+            `${path.src.scripts}${folder.components}${file.any}${extensions.any}`
+        ], ['scripts'])
+
+    // Watch assets
+    gulp.watch(`${path.src.fonts}${file.any}${extensions.any}`, ['fonts'])
+    gulp.watch(`${path.src.icons}${file.any}${extensions.any}`, ['icons'])
+    gulp.watch(`${path.src.audios}${file.any}${extensions.any}`, ['audios'])
+    gulp.watch(`${path.src.images}${file.any}${extensions.any}`, ['images'])
+    gulp.watch(`${path.src.videos}${file.any}${extensions.any}`, ['videos'])
 })
 
 /* -------------------------------------------------- *\

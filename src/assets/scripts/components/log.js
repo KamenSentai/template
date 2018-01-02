@@ -7,6 +7,8 @@ export default logger
 
 import { $query } from './variables'
 
+const $body = $query.$body
+
 export const blocker = () =>
 {
     const $div = document.createElement('div')
@@ -16,5 +18,5 @@ export const blocker = () =>
     $div.style.top = '25%'
     $div.style.width = '50%'
     $div.style.height = '50%'
-    $query.body.appendChild($div)
+    $body.appendChild($div)
 }
