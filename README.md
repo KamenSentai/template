@@ -7,31 +7,31 @@
 ## Features
 
 - Live reloading with Google Chrome on save
-- Compiling languages
-  - Conversion of PUG to HTML
+- Compile languages
+  - Compile `PUG` to `HTML`
     - Possibility to set HTML as default or any other HTML preprocessor but additionnal modules are required
-  - Conversion of STYLUS to CSS
+  - Compile `STYLUS` to `CSS`
     - Possibility to set CSS as default or any other CSS preprocessor but additionnal modules are required
-  - Conversion of ES6 to ES5
+  - Transpile `ES6` to `ES5`
     - Possibility to set ES5 as default or any other JS preprocessor but additionnal modules are required
-  - Minifying HTML
-  - Minifying CSS
-  - Minifying JS
-- Transfer of all assets
-  - Including audios, fonts, icons, images and videos
-  - Minifying images
+  - Minify HTML
+  - Minify CSS
+  - Minify JS
+- Transfer all assets
+  - Include audios, fonts, icons, images and videos
+  - Minify images
 - Libraries included
   - reset.css
   - font-awesome.css
   - modernizr-custom.js
-  - need to declare every library in the index file and the views files
+  - need to declare every library in the `index.pug` file and the views files
 - Several folders with different usages
-  - config/ folder to edit any configuration
-  - app/ folder to preview unminified files
+  - `config/` folder to edit any configuration
+  - `app/` folder to preview unminified files
     - folder not existed in the pack but automatically created when Gulp is running
-  - dist/ folder to export final work
+  - `dist/` folder to export final work
     - folder not existed in the pack but automatically created when Gulp is running
-  - src/ folder to work in it
+  - `src/` folder to work in it
 - Tools
   - CSScomb
   - ESLint
@@ -56,10 +56,14 @@ Windows
 npm install
 ```
 
-- Run Gulp
+- Run Gulp to initialize `app/` and `dist/`
 ```
 gulp
 ```
+
+- Check all assets in `src/` and keep those needed or edit them and remove the unused ones
+
+- Press `ctrl` + `C` to cancel Gulp and rerun Gulp in case of new files added
 
 ## Structure
 
