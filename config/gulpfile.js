@@ -11,8 +11,6 @@ const buffer        = require('vinyl-buffer')
 const source        = require('vinyl-source-stream')
 
 const gulp          = require('gulp'),
-      gulp_babel    = require('gulp-babel'),
-      gulp_concat   = require('gulp-concat'),
       gulp_cssnano  = require('gulp-cssnano'),
       gulp_imagemin = require('gulp-imagemin'),
       gulp_htmlmin  = require('gulp-htmlmin'),
@@ -170,7 +168,7 @@ gulp.task('libs', () =>
     gulp.src(`${path.src.styles}${folder.lib}${file.any}${extension.css}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Styles lib',
                         message : '<%= error.message %>',
@@ -185,7 +183,7 @@ gulp.task('libs', () =>
     gulp.src(`${path.src.scripts}${folder.lib}${file.any}${extension.js}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Scripts lib',
                         message : '<%= error.message %>',
@@ -206,7 +204,7 @@ gulp.task('index', () =>
     return gulp.src(`${path.src.root}${file.index}${extension.pug}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Index',
                         message : '<%= error.message %>',
@@ -215,12 +213,12 @@ gulp.task('index', () =>
             }))
         .pipe(gulp_pug(
             {
-                pretty: true
+                pretty : true
             }))
         .pipe(gulp.dest(path.app.root))
         .pipe(gulp_htmlmin(
             {
-                collapseWhitespace: true
+                collapseWhitespace : true
             }))
         .pipe(gulp.dest(path.dist.root))
         .pipe(browser_sync.stream())
@@ -241,7 +239,7 @@ gulp.task('views', () =>
     return gulp.src(`${path.src.views}${file.any}${extension.pug}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Views',
                         message : '<%= error.message %>',
@@ -250,12 +248,12 @@ gulp.task('views', () =>
             }))
         .pipe(gulp_pug(
             {
-                pretty: true
+                pretty : true
             }))
         .pipe(gulp.dest(path.app.views))
         .pipe(gulp_htmlmin(
             {
-                collapseWhitespace: true
+                collapseWhitespace : true
             }))
         .pipe(gulp.dest(path.dist.views))
         .pipe(browser_sync.stream())
@@ -276,7 +274,7 @@ gulp.task('styles', () =>
     return gulp.src(`${path.src.styles}${file.main}${extension.styl}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Styles',
                         message : '<%= error.message %>',
@@ -304,19 +302,19 @@ gulp.task('scripts', () =>
 {
 	return browserify(
         {
-            debug: true,
-            entries: `${path.src.scripts}${file.main}${extension.js}`
+            debug   : true,
+            entries : `${path.src.scripts}${file.main}${extension.js}`
         })
         .transform(babelify.configure(
             {
-                presets: ['babel-preset-env'].map(require.resolve)
+                presets : ['babel-preset-env'].map(require.resolve)
             }))
         .bundle()
         .pipe(source(`${file.main}${extension.js}`))
         .pipe(buffer())
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Scripts',
                         message : '<%= error.message %>',
@@ -344,7 +342,7 @@ gulp.task('fonts', () =>
     return gulp.src(`${path.src.fonts}${file.any}${extension.any}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Fonts',
                         message : '<%= error.message %>',
@@ -371,7 +369,7 @@ gulp.task('icons', () =>
     return gulp.src(`${path.src.icons}${file.any}${extension.any}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Icons',
                         message : '<%= error.message %>',
@@ -398,7 +396,7 @@ gulp.task('audios', () =>
     return gulp.src(`${path.src.audios}${file.any}${extension.any}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Audios',
                         message : '<%= error.message %>',
@@ -425,7 +423,7 @@ gulp.task('images', () =>
     return gulp.src(`${path.src.images}${file.any}${extension.any}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Images',
                         message : '<%= error.message %>',
@@ -453,7 +451,7 @@ gulp.task('videos', () =>
     return gulp.src(`${path.src.videos}${file.any}${extension.any}`)
         .pipe(gulp_plumber(
             {
-                errorHandler: gulp_notify.onError(
+                errorHandler : gulp_notify.onError(
                     {
                         title   : 'Videos',
                         message : '<%= error.message %>',
