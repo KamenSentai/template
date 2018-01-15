@@ -81,61 +81,42 @@ gulp
 │   ├─ package-lock.json
 │   └─ package.json
 ├─ app
-│   └─ assets
-│       ├─ audios
-│       ├─ fonts
-│       ├─ icons
-│       ├─ images
-│       ├─ scripts
-│       │   └─ lib
-│       ├─ styles
-│       │   └─ lib
-│       ├─ videos
-│       └─ views
+│   ├─ assets
+│   ├─ scripts
+│   ├─ styles
+│   └─ views
 ├─ dist
-│   └─ assets
-│       ├─ audios
-│       ├─ fonts
-│       ├─ icons
-│       ├─ images
-│       ├─ scripts
-│       │   └─ lib
-│       ├─ styles
-│       │   └─ lib
-│       ├─ videos
-│       └─ views
+│   ├─ assets
+│   ├─ scripts
+│   ├─ styles
+│   └─ views
 └─ src
     ├─ index.pug
-    └─ assets
-        ├─ audios
-        ├─ fonts
-        ├─ icons
-        ├─ images
-        ├─ scripts
-        │   ├─ main.js
-        │   ├─ components
-        │   │   ├─ log.js
-        │   │   ├─ test.js
-        │   │   └─ variables.js
-        │   └─ lib
-        │       └─ modernizr-custom.js
-        ├─ styles
-        │   ├─ main.styl
-        │   ├─ components
-        │   │   ├─ init.styl
-        │   │   └─ variables.styl
-        │   └─ lib
-        │       ├─ font-awesome.css
-        │       └─ reset.css
-        ├─ videos
-        └─ views
-            ├─ about.pug
-            └─ includes
-                ├─ head.pug
-                ├─ body.pug
-                └─ components
-                    ├─ header.pug
-                    └─ footer.pug
+    ├─ assets
+    ├─ scripts
+    │   ├─ main.js
+    │   ├─ components
+    │   │   ├─ log.js
+    │   │   ├─ test.js
+    │   │   └─ variables.js
+    │   └─ lib
+    │       └─ modernizr-custom.js
+    ├─ styles
+    │   ├─ main.styl
+    │   ├─ components
+    │   │   ├─ init.styl
+    │   │   └─ variables.styl
+    │   └─ lib
+    │       ├─ font-awesome.css
+    │       └─ reset.css
+    └─ views
+        ├─ about.pug
+        └─ includes
+          ├─ head.pug
+          ├─ body.pug
+          └─ components
+                ├─ header.pug
+                └─ footer.pug
 ```
 
 ## Repository

@@ -4,21 +4,22 @@
 |*
 \* ---------------------------------------------------------------------------------------------------- */
 
-const browser_sync  = require('browser-sync').create()
-const babelify      = require('babelify')
-const browserify    = require('browserify')
-const buffer        = require('vinyl-buffer')
-const source        = require('vinyl-source-stream')
+const browser_sync      = require('browser-sync').create()
+const babelify          = require('babelify')
+const browserify        = require('browserify')
+const buffer            = require('vinyl-buffer')
+const source            = require('vinyl-source-stream')
 
-const gulp          = require('gulp'),
-      gulp_cssnano  = require('gulp-cssnano'),
-      gulp_imagemin = require('gulp-imagemin'),
-      gulp_htmlmin  = require('gulp-htmlmin'),
-      gulp_notify   = require('gulp-notify'),
-      gulp_plumber  = require('gulp-plumber'),
-      gulp_pug      = require('gulp-pug'),
-      gulp_stylus   = require('gulp-stylus'),
-      gulp_uglify   = require('gulp-uglify')
+const gulp              = require('gulp'),
+      gulp_autoprefixer = require('gulp-autoprefixer'),
+      gulp_cssnano      = require('gulp-cssnano'),
+      gulp_imagemin     = require('gulp-imagemin'),
+      gulp_htmlmin      = require('gulp-htmlmin'),
+      gulp_notify       = require('gulp-notify'),
+      gulp_plumber      = require('gulp-plumber'),
+      gulp_pug          = require('gulp-pug'),
+      gulp_stylus       = require('gulp-stylus'),
+      gulp_uglify       = require('gulp-uglify')
 
 /* ---------------------------------------------------------------------------------------------------- *\
 |*
@@ -35,41 +36,41 @@ const path =
     app  :
     {
         root    : './../app/',
+        scripts : './../app/scripts/',
+        styles  : './../app/styles/',
+        views   : './../app/views/',
         assets  : './../app/assets/',
         audios  : './../app/assets/audios/',
         fonts   : './../app/assets/fonts/',
         icons   : './../app/assets/icons/',
         images  : './../app/assets/images/',
-        scripts : './../app/assets/scripts/',
-        styles  : './../app/assets/styles/',
-        videos  : './../app/assets/videos/',
-        views   : './../app/assets/views/'
+        videos  : './../app/assets/videos/'
     },
     dist :
     {
         root    : './../dist/',
+        scripts : './../dist/scripts/',
+        styles  : './../dist/styles/',
+        views   : './../dist/views/',
         assets  : './../dist/assets/',
         audios  : './../dist/assets/audios/',
         fonts   : './../dist/assets/fonts/',
         icons   : './../dist/assets/icons/',
         images  : './../dist/assets/images/',
-        scripts : './../dist/assets/scripts/',
-        styles  : './../dist/assets/styles/',
-        videos  : './../dist/assets/videos/',
-        views   : './../dist/assets/views/'
+        videos  : './../dist/assets/videos/'
     },
     src  :
     {
         root    : './../src/',
+        scripts : './../src/scripts/',
+        styles  : './../src/styles/',
+        views   : './../src/views/',
         assets  : './../src/assets/',
         audios  : './../src/assets/audios/',
         fonts   : './../src/assets/fonts/',
         icons   : './../src/assets/icons/',
         images  : './../src/assets/images/',
-        scripts : './../src/assets/scripts/',
-        styles  : './../src/assets/styles/',
-        videos  : './../src/assets/videos/',
-        views   : './../src/assets/views/'
+        videos  : './../src/assets/videos/'
     }
 }
 
@@ -147,9 +148,9 @@ const extension =
 
 const message =
 {
-    compiled    : 'compiled',
-    distributed : 'distributed',
-    transpiled  : 'transpiled'
+    compiled   : 'compiled',
+    exported   : 'exported',
+    transpiled : 'transpiled'
 }
 
 /* ---------------------------------------------------------------------------------------------------- *\
@@ -157,6 +158,33 @@ const message =
 |* TASKS
 |*
 \* ---------------------------------------------------------------------------------------------------- */
+
+/* -------------------------------------------------- *\
+|* ASSETS
+\* -------------------------------------------------- */
+
+gulp.task('assets', () =>
+{
+    return gulp.src([`${path.src.assets}${folder.any}${file.any}${extension.any}`])
+        .pipe(gulp_plumber(
+            {
+                errorHandler : gulp_notify.onError(
+                    {
+                        title   : 'Assets',
+                        message : '<%= error.message %>',
+                        sound   : 'beep'
+                    })
+            }))
+        .pipe(gulp.dest(path.app.assets))
+        .pipe(gulp.dest(path.dist.assets))
+        .pipe(browser_sync.stream())
+        .pipe(gulp_notify(
+            {
+                title   : 'Assets',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+})
 
 /* -------------------------------------------------- *\
 |* LIBS
@@ -175,9 +203,15 @@ gulp.task('libs', () =>
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp.dest(`${path.app.styles}${folder.lib}`))
+        .pipe(gulp.dest(`${path.app.styles}`))
         .pipe(gulp_cssnano())
-        .pipe(gulp.dest(`${path.dist.styles}${folder.lib}`))
+        .pipe(gulp.dest(`${path.dist.styles}`))
+        .pipe(gulp_notify(
+            {
+                title   : 'Style libraries',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
 
     // Update scripts libraries
     gulp.src(`${path.src.scripts}${folder.lib}${file.any}${extension.js}`)
@@ -190,106 +224,13 @@ gulp.task('libs', () =>
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp.dest(`${path.app.scripts}${folder.lib}`))
+        .pipe(gulp.dest(`${path.app.scripts}`))
         .pipe(gulp_uglify())
-        .pipe(gulp.dest(`${path.dist.scripts}${folder.lib}`))
-})
-
-/* -------------------------------------------------- *\
-|* INDEX
-\* -------------------------------------------------- */
-
-gulp.task('index', () =>
-{
-    return gulp.src(`${path.src.root}${file.index}${extension.pug}`)
-        .pipe(gulp_plumber(
-            {
-                errorHandler : gulp_notify.onError(
-                    {
-                        title   : 'Index',
-                        message : '<%= error.message %>',
-                        sound   : 'beep'
-                    })
-            }))
-        .pipe(gulp_pug(
-            {
-                pretty : true
-            }))
-        .pipe(gulp.dest(path.app.root))
-        .pipe(gulp_htmlmin(
-            {
-                collapseWhitespace : true
-            }))
-        .pipe(gulp.dest(path.dist.root))
-        .pipe(browser_sync.stream())
+        .pipe(gulp.dest(`${path.dist.scripts}`))
         .pipe(gulp_notify(
             {
-                title   : 'Index',
-                message : `<%= file.relative %> : ${message.compiled}`,
-                sound   : 'beep'
-            }))
-})
-
-/* -------------------------------------------------- *\
-|* VIEWS
-\* -------------------------------------------------- */
-
-gulp.task('views', () =>
-{
-    return gulp.src(`${path.src.views}${file.any}${extension.pug}`)
-        .pipe(gulp_plumber(
-            {
-                errorHandler : gulp_notify.onError(
-                    {
-                        title   : 'Views',
-                        message : '<%= error.message %>',
-                        sound   : 'beep'
-                    })
-            }))
-        .pipe(gulp_pug(
-            {
-                pretty : true
-            }))
-        .pipe(gulp.dest(path.app.views))
-        .pipe(gulp_htmlmin(
-            {
-                collapseWhitespace : true
-            }))
-        .pipe(gulp.dest(path.dist.views))
-        .pipe(browser_sync.stream())
-        .pipe(gulp_notify(
-            {
-                title   : 'Views',
-                message : `<%= file.relative %> : ${message.compiled}`,
-                sound   : 'beep'
-            }))
-})
-
-/* -------------------------------------------------- *\
-|* STYLES
-\* -------------------------------------------------- */
-
-gulp.task('styles', () =>
-{
-    return gulp.src(`${path.src.styles}${file.main}${extension.styl}`)
-        .pipe(gulp_plumber(
-            {
-                errorHandler : gulp_notify.onError(
-                    {
-                        title   : 'Styles',
-                        message : '<%= error.message %>',
-                        sound   : 'beep'
-                    })
-            }))
-        .pipe(gulp_stylus())
-        .pipe(gulp.dest(path.app.styles))
-        .pipe(gulp_cssnano())
-        .pipe(gulp.dest(path.dist.styles))
-        .pipe(browser_sync.stream())
-        .pipe(gulp_notify(
-            {
-                title   : 'Styles',
-                message : `<%= file.relative %> : ${message.compiled}`,
+                title   : 'Script libraries',
+                message : `<%= file.relative %> : ${message.exported}`,
                 sound   : 'beep'
             }))
 })
@@ -334,137 +275,101 @@ gulp.task('scripts', () =>
 })
 
 /* -------------------------------------------------- *\
-|* FONTS
+|* STYLES
 \* -------------------------------------------------- */
 
-gulp.task('fonts', () =>
+gulp.task('styles', () =>
 {
-    return gulp.src(`${path.src.fonts}${file.any}${extension.any}`)
+    return gulp.src(`${path.src.styles}${file.main}${extension.styl}`)
         .pipe(gulp_plumber(
             {
                 errorHandler : gulp_notify.onError(
                     {
-                        title   : 'Fonts',
+                        title   : 'Styles',
                         message : '<%= error.message %>',
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp.dest(path.app.fonts))
-        .pipe(gulp.dest(path.dist.fonts))
+        .pipe(gulp_stylus())
+        .pipe(gulp_autoprefixer())
+        .pipe(gulp.dest(path.app.styles))
+        .pipe(gulp_cssnano())
+        .pipe(gulp.dest(path.dist.styles))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title   : 'Fonts',
-                message : `<%= file.relative %> : ${message.distributed}`,
+                title   : 'Styles',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
 
 /* -------------------------------------------------- *\
-|* ICONS
+|* VIEWS
 \* -------------------------------------------------- */
 
-gulp.task('icons', () =>
+gulp.task('views', () =>
 {
-    return gulp.src(`${path.src.icons}${file.any}${extension.any}`)
+    return gulp.src(`${path.src.views}${file.any}${extension.pug}`)
         .pipe(gulp_plumber(
             {
                 errorHandler : gulp_notify.onError(
                     {
-                        title   : 'Icons',
+                        title   : 'Views',
                         message : '<%= error.message %>',
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp.dest(path.app.icons))
-        .pipe(gulp.dest(path.dist.icons))
+        .pipe(gulp_pug(
+            {
+                pretty : true
+            }))
+        .pipe(gulp.dest(path.app.views))
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace : true
+            }))
+        .pipe(gulp.dest(path.dist.views))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title   : 'Icons',
-                message : `<%= file.relative %> : ${message.distributed}`,
+                title   : 'Views',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
 
 /* -------------------------------------------------- *\
-|* AUDIOS
+|* INDEX
 \* -------------------------------------------------- */
 
-gulp.task('audios', () =>
+gulp.task('index', () =>
 {
-    return gulp.src(`${path.src.audios}${file.any}${extension.any}`)
+    return gulp.src(`${path.src.root}${file.index}${extension.pug}`)
         .pipe(gulp_plumber(
             {
                 errorHandler : gulp_notify.onError(
                     {
-                        title   : 'Audios',
+                        title   : 'Index',
                         message : '<%= error.message %>',
                         sound   : 'beep'
                     })
             }))
-        .pipe(gulp.dest(path.app.audios))
-        .pipe(gulp.dest(path.dist.audios))
+        .pipe(gulp_pug(
+            {
+                pretty : true
+            }))
+        .pipe(gulp.dest(path.app.root))
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace : true
+            }))
+        .pipe(gulp.dest(path.dist.root))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
-                title   : 'Audios',
-                message : `<%= file.relative %> : ${message.distributed}`,
-                sound   : 'beep'
-            }))
-})
-
-/* -------------------------------------------------- *\
-|* IMAGES
-\* -------------------------------------------------- */
-
-gulp.task('images', () =>
-{
-    return gulp.src(`${path.src.images}${file.any}${extension.any}`)
-        .pipe(gulp_plumber(
-            {
-                errorHandler : gulp_notify.onError(
-                    {
-                        title   : 'Images',
-                        message : '<%= error.message %>',
-                        sound   : 'beep'
-                    })
-            }))
-        .pipe(gulp.dest(path.app.images))
-        .pipe(gulp_imagemin())
-        .pipe(gulp.dest(path.dist.images))
-        .pipe(browser_sync.stream())
-        .pipe(gulp_notify(
-            {
-                title   : 'Images',
-                message : `<%= file.relative %> : ${message.distributed}`,
-                sound   : 'beep'
-            }))
-})
-
-/* -------------------------------------------------- *\
-|* VIDEOS
-\* -------------------------------------------------- */
-
-gulp.task('videos', () =>
-{
-    return gulp.src(`${path.src.videos}${file.any}${extension.any}`)
-        .pipe(gulp_plumber(
-            {
-                errorHandler : gulp_notify.onError(
-                    {
-                        title   : 'Videos',
-                        message : '<%= error.message %>',
-                        sound   : 'beep'
-                    })
-            }))
-        .pipe(gulp.dest(path.app.videos))
-        .pipe(gulp.dest(path.dist.videos))
-        .pipe(browser_sync.stream())
-        .pipe(gulp_notify(
-            {
-                title   : 'Videos',
-                message : `<%= file.relative %> : ${message.distributed}`,
+                title   : 'Index',
+                message : `<%= file.relative %> : ${message.compiled}`,
                 sound   : 'beep'
             }))
 })
@@ -478,9 +383,13 @@ gulp.task('watch', () =>
     // Run browser
     browser_sync.init(
         {
-            server  : path.dist.root,
-            browser : 'Google Chrome'
+            server  : path.app.root,
+            browser : 'Google Chrome',
+            port    : 5000
         })
+
+    // Watch assets
+    gulp.watch(`${path.src.assets}${folder.any}${file.any}${extension.any}`, ['assets'])
 
     // Watch libs
     gulp.watch(
@@ -489,13 +398,19 @@ gulp.task('watch', () =>
             `${path.src.scripts}${folder.lib}${file.any}${extension.any}`
         ], ['libs'])
 
-    // Watch index
+    // Watch scripts
     gulp.watch(
         [
-            `${path.src.root}${file.any}${extension.any}`,
-            `${path.src.views}${folder.includes}${file.any}${extension.any}`,
-            `${path.src.views}${folder.includes}${folder.components}${file.any}${extension.any}`
-        ], ['index'])
+            `${path.src.scripts}${file.any}${extension.any}`,
+            `${path.src.scripts}${folder.components}${file.any}${extension.any}`
+        ], ['scripts'])
+
+    // Watch styles
+    gulp.watch(
+        [
+            `${path.src.styles}${file.any}${extension.any}`,
+            `${path.src.styles}${folder.components}${file.any}${extension.any}`
+        ], ['styles'])
 
     // Watch views
     gulp.watch(
@@ -505,26 +420,13 @@ gulp.task('watch', () =>
             `${path.src.views}${folder.includes}${folder.components}${file.any}${extension.any}`
         ], ['views'])
 
-    // Watch styles
+    // Watch index
     gulp.watch(
         [
-            `${path.src.styles}${file.any}${extension.any}`,
-            `${path.src.styles}${folder.components}${file.any}${extension.any}`
-        ], ['styles'])
-
-    // Watch scripts
-    gulp.watch(
-        [
-            `${path.src.scripts}${file.any}${extension.any}`,
-            `${path.src.scripts}${folder.components}${file.any}${extension.any}`
-        ], ['scripts'])
-
-    // Watch assets
-    gulp.watch(`${path.src.fonts}${file.any}${extension.any}`, ['fonts'])
-    gulp.watch(`${path.src.icons}${file.any}${extension.any}`, ['icons'])
-    gulp.watch(`${path.src.audios}${file.any}${extension.any}`, ['audios'])
-    gulp.watch(`${path.src.images}${file.any}${extension.any}`, ['images'])
-    gulp.watch(`${path.src.videos}${file.any}${extension.any}`, ['videos'])
+            `${path.src.root}${file.any}${extension.any}`,
+            `${path.src.views}${folder.includes}${file.any}${extension.any}`,
+            `${path.src.views}${folder.includes}${folder.components}${file.any}${extension.any}`
+        ], ['index'])
 })
 
 /* -------------------------------------------------- *\
@@ -533,15 +435,11 @@ gulp.task('watch', () =>
 
 gulp.task('default',
     [
+        'assets',
         'libs',
-        'index',
-        'views',
-        'styles',
         'scripts',
-        'fonts',
-        'icons',
-        'audios',
-        'images',
-        'videos',
+        'styles',
+        'views',
+        'index',
         'watch'
     ])
