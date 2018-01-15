@@ -176,7 +176,6 @@ gulp.task('assets', () =>
                     })
             }))
         .pipe(gulp.dest(path.app.assets))
-        .pipe(gulp.dest(path.dist.assets))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
@@ -204,8 +203,6 @@ gulp.task('libs', () =>
                     })
             }))
         .pipe(gulp.dest(`${path.app.styles}`))
-        .pipe(gulp_cssnano())
-        .pipe(gulp.dest(`${path.dist.styles}`))
         .pipe(gulp_notify(
             {
                 title   : 'Style libraries',
@@ -225,8 +222,6 @@ gulp.task('libs', () =>
                     })
             }))
         .pipe(gulp.dest(`${path.app.scripts}`))
-        .pipe(gulp_uglify())
-        .pipe(gulp.dest(`${path.dist.scripts}`))
         .pipe(gulp_notify(
             {
                 title   : 'Script libraries',
@@ -263,8 +258,6 @@ gulp.task('scripts', () =>
                     })
             }))
         .pipe(gulp.dest(`${path.app.scripts}`))
-        .pipe(gulp_uglify())
-        .pipe(gulp.dest(`${path.dist.scripts}`))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
@@ -293,8 +286,6 @@ gulp.task('styles', () =>
         .pipe(gulp_stylus())
         .pipe(gulp_autoprefixer())
         .pipe(gulp.dest(path.app.styles))
-        .pipe(gulp_cssnano())
-        .pipe(gulp.dest(path.dist.styles))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
@@ -325,11 +316,6 @@ gulp.task('views', () =>
                 pretty : true
             }))
         .pipe(gulp.dest(path.app.views))
-        .pipe(gulp_htmlmin(
-            {
-                collapseWhitespace : true
-            }))
-        .pipe(gulp.dest(path.dist.views))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
@@ -360,11 +346,6 @@ gulp.task('index', () =>
                 pretty : true
             }))
         .pipe(gulp.dest(path.app.root))
-        .pipe(gulp_htmlmin(
-            {
-                collapseWhitespace : true
-            }))
-        .pipe(gulp.dest(path.dist.root))
         .pipe(browser_sync.stream())
         .pipe(gulp_notify(
             {
@@ -427,6 +408,82 @@ gulp.task('watch', () =>
             `${path.src.views}${folder.includes}${file.any}${extension.any}`,
             `${path.src.views}${folder.includes}${folder.components}${file.any}${extension.any}`
         ], ['index'])
+})
+
+/* -------------------------------------------------- *\
+|* PRODUCTION
+\* -------------------------------------------------- */
+
+gulp.task('production', () =>
+{
+    gulp.src(`${path.app.images}${file.any}${extension.any}`)
+        .pipe(gulp_imagemin())
+        .pipe(gulp.dest(path.dist.images))
+        .pipe(gulp_notify(
+            {
+                title   : 'Images',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+
+    gulp.src(
+        [
+            `${path.app.assets}${folder.any}${file.any}${extension.any}`,
+            `!${path.app.images}${file.any}${extension.any}`
+        ])
+        .pipe(gulp.dest(path.dist.assets))
+        .pipe(gulp_notify(
+            {
+                title   : 'Assets',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+
+    gulp.src([`${path.app.scripts}${file.any}${extension.js}`])
+        .pipe(gulp_uglify())
+        .pipe(gulp.dest(`${path.dist.scripts}`))
+        .pipe(gulp_notify(
+            {
+                title   : 'Styles',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+
+    gulp.src([`${path.app.styles}${file.any}${extension.css}`])
+        .pipe(gulp_cssnano())
+        .pipe(gulp.dest(`${path.dist.styles}`))
+        .pipe(gulp_notify(
+            {
+                title   : 'Scripts',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+
+    gulp.src([`${path.app.views}${file.any}${extension.html}`])
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace : true
+            }))
+        .pipe(gulp.dest(path.dist.views))
+        .pipe(gulp_notify(
+            {
+                title   : 'Views',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
+
+    gulp.src(`${path.app.root}${file.index}${extension.html}`)
+        .pipe(gulp_htmlmin(
+            {
+                collapseWhitespace : true
+            }))
+        .pipe(gulp.dest(path.dist.root))
+        .pipe(gulp_notify(
+            {
+                title   : 'Index',
+                message : `<%= file.relative %> : ${message.exported}`,
+                sound   : 'beep'
+            }))
 })
 
 /* -------------------------------------------------- *\
