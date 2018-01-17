@@ -78,18 +78,7 @@ gulp
 │   ├─ .eslintignore
 │   ├─ .eslintrc.js
 │   ├─ gulpfile.js
-│   ├─ package-lock.json
 │   └─ package.json
-├─ app
-│   ├─ assets
-│   ├─ scripts
-│   ├─ styles
-│   └─ views
-├─ dist
-│   ├─ assets
-│   ├─ scripts
-│   ├─ styles
-│   └─ views
 └─ src
     ├─ index.pug
     ├─ assets
