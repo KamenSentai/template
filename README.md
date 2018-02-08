@@ -32,6 +32,8 @@
   - `dist/` folder to export final work
     - folder not existed in the pack but automatically created when Gulp is running
   - `src/` folder to work in it
+  - Location of each view page except the index at `(app|dist|src)/views/` by default
+    - Requirement of editing `path` object in gulpfile.js if changing path for the URL
 - Tools
   - CSScomb
   - ESLint
