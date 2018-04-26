@@ -39,7 +39,8 @@ const path =
 		scripts : './../app/scripts/',
 		styles  : './../app/styles/',
 		views   : './../app/views/',
-		assets  : './../app/assets/'
+		assets  : './../app/assets/',
+		images  : './../app/assets/images'
 	},
 	dist :
 	{
@@ -47,7 +48,8 @@ const path =
 		scripts : './../dist/scripts/',
 		styles  : './../dist/styles/',
 		views   : './../dist/views/',
-		assets  : './../dist/assets/'
+		assets  : './../dist/assets/',
+		images  : './../dist/assets/images'
 	},
 	src  :
 	{
@@ -55,7 +57,8 @@ const path =
 		scripts : './../src/scripts/',
 		styles  : './../src/styles/',
 		views   : './../src/views/',
-		assets  : './../src/assets/'
+		assets  : './../src/assets/',
+		images  : './../src/assets/images'
 	}
 }
 
