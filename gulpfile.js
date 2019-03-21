@@ -35,30 +35,30 @@ const path =
 {
 	app  :
 	{
-		root    : '../app/',
-		scripts : '../app/scripts/',
-		styles  : '../app/styles/',
-		views   : '../app/views/',
-		assets  : '../app/assets/',
-		images  : '../app/assets/images'
+		root    : './app/',
+		scripts : './app/scripts/',
+		styles  : './app/styles/',
+		views   : './app/views/',
+		assets  : './app/assets/',
+		images  : './app/assets/images'
 	},
 	dist :
 	{
-		root    : '../dist/',
-		scripts : '../dist/scripts/',
-		styles  : '../dist/styles/',
-		views   : '../dist/views/',
-		assets  : '../dist/assets/',
-		images  : '../dist/assets/images'
+		root    : './dist/',
+		scripts : './dist/scripts/',
+		styles  : './dist/styles/',
+		views   : './dist/views/',
+		assets  : './dist/assets/',
+		images  : './dist/assets/images'
 	},
 	src  :
 	{
-		root    : '../src/',
-		scripts : '../src/scripts/',
-		styles  : '../src/styles/',
-		views   : '../src/views/',
-		assets  : '../src/assets/',
-		images  : '../src/assets/images'
+		root    : './src/',
+		scripts : './src/scripts/',
+		styles  : './src/styles/',
+		views   : './src/views/',
+		assets  : './src/assets/',
+		images  : './src/assets/images'
 	}
 }
 
