@@ -132,28 +132,24 @@ gulp.task('scripts', () => {
 |* STYLES
 \* -------------------------------------------------- */
 
-gulp.task('styles', () =>
-{
-return gulp.src(`${path.src.styles}main.styl`)
-.pipe(gulpPlumber(
-{
-errorHandler : gulpNotify.onError(
-{
-title   : 'Styles',
-message : `${message.error}`,
-sound   : 'beep'
-})
-}))
-.pipe(gulpStylus())
-.pipe(gulpAutoprefixer())
-.pipe(gulp.dest(path.app.styles))
-.pipe(browserSync.stream())
-.pipe(gulpNotify(
-{
-title   : 'Styles',
-message : `${message.compiled}`,
-sound   : 'beep'
-}))
+gulp.task('styles', () => {
+  return gulp.src(`${path.src.styles}main.styl`)
+  .pipe(gulpPlumber({
+    errorHandler : gulpNotify.onError({
+      title   : 'Styles',
+      message : `${message.error}`,
+      sound   : 'beep'
+    })
+  }))
+  .pipe(gulpStylus())
+  .pipe(gulpAutoprefixer())
+  .pipe(gulp.dest(path.app.styles))
+  .pipe(browserSync.stream())
+  .pipe(gulpNotify({
+    title   : 'Styles',
+    message : `${message.compiled}`,
+    sound   : 'beep'
+  }))
 })
 
 /* -------------------------------------------------- *\
