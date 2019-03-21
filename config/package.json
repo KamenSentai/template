@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "front-end_template",
   "version": "1.0.0",
   "description": "template front-end starter pack",
   "main": "gulpfile.js",
@@ -32,15 +32,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KamenSentai/template.git"
+    "url": "git+https://github.com/KamenSentai/Front-end_Template.git"
   },
   "keywords": [
-    "template"
+	"template",
+	"front-end"
   ],
   "author": "Alain Cao Van Truong",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KamenSentai/template/issues"
+    "url": "https://github.com/KamenSentai/Front-end_Template/issues"
   },
-  "homepage": "https://github.com/KamenSentai/template#readme"
+  "homepage": "https://github.com/KamenSentai/Front-end_Template#readme"
 }
