@@ -35,30 +35,30 @@ const path =
 {
 	app  :
 	{
-		root    : './../app/',
-		scripts : './../app/scripts/',
-		styles  : './../app/styles/',
-		views   : './../app/views/',
-		assets  : './../app/assets/',
-		images  : './../app/assets/images'
+		root    : '../app/',
+		scripts : '../app/scripts/',
+		styles  : '../app/styles/',
+		views   : '../app/views/',
+		assets  : '../app/assets/',
+		images  : '../app/assets/images'
 	},
 	dist :
 	{
-		root    : './../dist/',
-		scripts : './../dist/scripts/',
-		styles  : './../dist/styles/',
-		views   : './../dist/views/',
-		assets  : './../dist/assets/',
-		images  : './../dist/assets/images'
+		root    : '../dist/',
+		scripts : '../dist/scripts/',
+		styles  : '../dist/styles/',
+		views   : '../dist/views/',
+		assets  : '../dist/assets/',
+		images  : '../dist/assets/images'
 	},
 	src  :
 	{
-		root    : './../src/',
-		scripts : './../src/scripts/',
-		styles  : './../src/styles/',
-		views   : './../src/views/',
-		assets  : './../src/assets/',
-		images  : './../src/assets/images'
+		root    : '../src/',
+		scripts : '../src/scripts/',
+		styles  : '../src/styles/',
+		views   : '../src/views/',
+		assets  : '../src/assets/',
+		images  : '../src/assets/images'
 	}
 }
 
@@ -101,51 +101,6 @@ gulp.task('assets', () =>
 		.pipe(gulpNotify(
 			{
 				title   : 'Assets',
-				message : `${message.exported}`,
-				sound   : 'beep'
-			}))
-})
-
-/* -------------------------------------------------- *\
-|* LIBS
-\* -------------------------------------------------- */
-
-gulp.task('libs', () =>
-{
-	// Update styles libraries
-	gulp.src(`${path.src.styles}lib/*.css`)
-		.pipe(gulpPlumber(
-			{
-				errorHandler : gulpNotify.onError(
-					{
-						title   : 'Styles lib',
-						message : `${message.error}`,
-						sound   : 'beep'
-					})
-			}))
-		.pipe(gulp.dest(`${path.app.styles}`))
-		.pipe(gulpNotify(
-			{
-				title   : 'Style libraries',
-				message : `${message.exported}`,
-				sound   : 'beep'
-			}))
-
-	// Update scripts libraries
-	gulp.src(`${path.src.scripts}lib/*.js`)
-		.pipe(gulpPlumber(
-			{
-				errorHandler : gulpNotify.onError(
-					{
-						title   : 'Scripts lib',
-						message : `${message.error}`,
-						sound   : 'beep'
-					})
-			}))
-		.pipe(gulp.dest(`${path.app.scripts}`))
-		.pipe(gulpNotify(
-			{
-				title   : 'Script libraries',
 				message : `${message.exported}`,
 				sound   : 'beep'
 			}))
@@ -222,7 +177,7 @@ gulp.task('styles', () =>
 
 gulp.task('views', () =>
 {
-	return gulp.src(`${path.src.views}*.pug`)
+	return gulp.src(`${path.src.views}pages/*.pug`)
 		.pipe(gulpPlumber(
 			{
 				errorHandler : gulpNotify.onError(
@@ -247,36 +202,6 @@ gulp.task('views', () =>
 })
 
 /* -------------------------------------------------- *\
-|* INDEX
-\* -------------------------------------------------- */
-
-gulp.task('index', () =>
-{
-	return gulp.src(`${path.src.root}index.pug`)
-		.pipe(gulpPlumber(
-			{
-				errorHandler : gulpNotify.onError(
-					{
-						title   : 'Index',
-						message : `${message.error}`,
-						sound   : 'beep'
-					})
-			}))
-		.pipe(gulpPug(
-			{
-				pretty : true
-			}))
-		.pipe(gulp.dest(path.app.root))
-		.pipe(browserSync.stream())
-		.pipe(gulpNotify(
-			{
-				title   : 'Index',
-				message : `${message.compiled}`,
-				sound   : 'beep'
-			}))
-})
-
-/* -------------------------------------------------- *\
 |* WATCH
 \* -------------------------------------------------- */
 
@@ -285,50 +210,35 @@ gulp.task('watch', () =>
 	// Run browser
 	browserSync.init(
 		{
-			server  : path.app.root,
+			server  : path.app.views,
 			browser : 'Google Chrome',
 			port    : 5000
 		})
 
 	// Watch assets
-	gulp.watch(`${path.src.assets}**/*.*`, ['assets'])
-
-	// Watch libs
-	gulp.watch(
-		[
-			`${path.src.styles}lib/*.*`,
-			`${path.src.scripts}lib/*.*`
-		], ['libs'])
+	gulp.watch([
+		`${path.src.assets}**/*.*`
+	], ['assets'])
 
 	// Watch scripts
 	gulp.watch(
 		[
 			`${path.src.scripts}*.*`,
-			`${path.src.scripts}components/*.*`
+			`${path.src.scripts}**/*.*`
 		], ['scripts'])
 
 	// Watch styles
 	gulp.watch(
 		[
 			`${path.src.styles}*.*`,
-			`${path.src.styles}components/*.*`
+			`${path.src.styles}**/*.*`
 		], ['styles'])
 
 	// Watch views
 	gulp.watch(
 		[
-			`${path.src.views}*.*`,
-			`${path.src.views}includes/*.*`,
-			`${path.src.views}includes/components/*.*`
+			`${path.src.views}**/*.*`
 		], ['views'])
-
-	// Watch index
-	gulp.watch(
-		[
-			`${path.src.root}*.*`,
-			`${path.src.views}includes/*.*`,
-			`${path.src.views}includes/components/*.*`
-		], ['index'])
 })
 
 /* -------------------------------------------------- *\
@@ -397,24 +307,10 @@ gulp.task('production', () =>
 				message : `${message.exported}`,
 				sound   : 'beep'
 			}))
-
-	// Minify and export index
-	gulp.src(`${path.app.root}index.html`)
-		.pipe(gulpHtmlmin(
-			{
-				collapseWhitespace : true
-			}))
-		.pipe(gulp.dest(path.dist.root))
-		.pipe(gulpNotify(
-			{
-				title   : 'Index',
-				message : `${message.exported}`,
-				sound   : 'beep'
-			}))
 })
 
 /* -------------------------------------------------- *\
 |* DEFAULT
 \* -------------------------------------------------- */
 
-gulp.task('default', ['assets', 'libs', 'scripts', 'styles', 'views', 'index', 'watch'])
+gulp.task('default', ['assets', 'scripts', 'styles', 'views', 'watch'])
